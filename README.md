@@ -13,7 +13,7 @@ Un blocco note moderno, sicuro e self-hosted pensato per Raspberry Pi 5.
 
 1. Clona il repository:
    ```bash
-   git clone [https://github.com/frankiio4569/PiNote.git](https://github.com/frankiio4569/PiNote.git)
+   git clone https://github.com/frankiio4569/PiNote.git
    cd PiNote
 
 ## 📄 Licenza
