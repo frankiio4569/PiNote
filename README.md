@@ -1,9 +1,4 @@
-
-<<<<<<< HEAD
-# 📒 PiNote 5 (v2.0)
-=======
-# 📒 PiNote 5 (v2.1)
->>>>>>> 050b30fcbb3a8a44f6394c4c93fa8dfce03e1789
+# 📒 PiNote 5 (v2.2)
 
 Un blocco note moderno, sicuro e self-hosted pensato per Raspberry Pi 5.
 
