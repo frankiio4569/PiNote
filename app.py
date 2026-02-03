@@ -7,7 +7,7 @@ import os
 
 app = Flask(__name__)
 
-APP_VERSION = "2.1"
+APP_VERSION = "2.2"
 
 @app.context_processor
 def inject_version():
