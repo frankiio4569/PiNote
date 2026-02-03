@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-success">
+            <div class="card-header bg-success text-white">Crea un nuovo account</div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label>Scegli Username</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Scegli Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Registrati</button>
+                </form>
+                <div class="mt-3 text-center">
+                    <a href="/login">Hai già un account? Accedi</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

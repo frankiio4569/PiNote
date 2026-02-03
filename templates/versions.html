@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>Cronologia: {{ note.title }}</h3>
+    <a href="/" class="btn btn-secondary">← Torna alle note</a>
+</div>
+
+<div class="card mb-4 border-primary">
+    <div class="card-header bg-primary text-white">Versione Corrente</div>
+    <div class="card-body">
+        {{ note.content }}
+    </div>
+</div>
+
+<h4>Versioni Precedenti</h4>
+{% if not history %}
+    <p class="text-muted">Nessuna versione precedente salvata.</p>
+{% else %}
+    <div class="list-group">
+    {% for version in history %}
+        <div class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Versione archiviata</h5>
+                <small class="text-muted">{{ version.date_archived.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+            </div>
+            <p class="mb-1 text-muted">{{ version.content }}</p>
+            
+            </div>
+    {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

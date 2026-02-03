@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Le tue Note</h2>
+    <a href="/note/new" class="btn btn-primary">+ Nuova Nota</a>
+</div>
+
+<div class="row">
+    {% for note in notes %}
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title d-flex justify-content-between">
+                    {{ note.title }}
+                    {% if note.is_protected %}<span>🔒</span>{% endif %}
+                </h5>
+                <p class="card-text text-muted" style="height: 60px; overflow: hidden;">
+                    {% if note.is_protected %}
+                        <em>Contenuto Protetto</em>
+                    {% else %}
+                        {{ note.content[:100] }}...
+                    {% endif %}
+                </p>
+                <div class="btn-group w-100" role="group">
+                    <a href="/note/edit/{{ note.id }}" class="btn btn-sm btn-outline-primary">Modifica</a>
+                    <a href="/note/versions/{{ note.id }}" class="btn btn-sm btn-outline-info">Storia</a>
+                    <a href="/note/move_to_trash/{{ note.id }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Spostare nel cestino?')">🗑️</a>
+                </div>
+            </div>
+            <div class="card-footer text-muted small bg-transparent">
+                Aggiornato: {{ note.date_updated.strftime('%d/%m %H:%M') }}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12 text-center mt-5">
+        <p class="text-muted">Nessuna nota presente. Creane una!</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
