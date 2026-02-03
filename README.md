@@ -1,4 +1,9 @@
+
+<<<<<<< HEAD
 # 📒 PiNote 5 (v2.0)
+=======
+# 📒 PiNote 5 (v2.1)
+>>>>>>> 050b30fcbb3a8a44f6394c4c93fa8dfce03e1789
 
 Un blocco note moderno, sicuro e self-hosted pensato per Raspberry Pi 5.
 
@@ -15,3 +20,10 @@ Un blocco note moderno, sicuro e self-hosted pensato per Raspberry Pi 5.
    ```bash
    git clone [https://github.com/frankiio4569/PiNote.git](https://github.com/frankiio4569/PiNote.git)
    cd PiNote
+
+
+
+
+
+
+
