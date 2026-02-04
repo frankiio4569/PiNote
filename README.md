@@ -9,6 +9,11 @@ Un blocco note moderno, sicuro e self-hosted pensato per Raspberry Pi 5.
 * 🗑️ **Cestino:** Sistema di recupero per note cancellate.
 * 🌗 **Dark Mode:** Tema chiaro/scuro automatico o manuale.
 
+Ci tengo a specificare che tutto questo progetto è a scopo personale,
+non sono del settore ma mi ha sempre divertito mettere le mani in pasta
+e quindi lo sto facendo anche per imparae.
+Continuerò ad aggiornare e a sperimentare.
+
 ## Installazione Rapida
 
 1. Clona il repository:
