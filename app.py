@@ -1,3 +1,4 @@
+from flask import Flask, render_template, redirect, url_for, request, flash, session
 from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
@@ -7,7 +8,7 @@ import os
 
 app = Flask(__name__)
 
-APP_VERSION = "2.2.1"
+APP_VERSION = "2.2.2"
 
 @app.context_processor
 def inject_version():
@@ -83,6 +84,31 @@ def new_note():
         return redirect(url_for('index'))
     return render_template('editor.html', note=None)
 
+@app.route('/note/unlock/<int:id>', methods=['GET', 'POST'])
+@login_required
+def unlock_note(id):
+    note = db.session.get(Note, id)
+    
+    # Controlli di sicurezza base
+    if not note or note.user_id != current_user.id or note.is_deleted:
+        return "Accesso negato", 403
+    
+    # Se la nota non è protetta, non serve sbloccarla
+    if not note.is_protected:
+        return redirect(url_for('edit_note', id=id))
+
+    if request.method == 'POST':
+        password_attempt = request.form.get('password')
+        # Verifica se la password è corretta
+        if note.protection_password and check_password_hash(note.protection_password, password_attempt):
+            # SALVA NELLA SESSIONE CHE QUESTA NOTA È APERTA
+            session[f'unlocked_{id}'] = True
+            return redirect(url_for('edit_note', id=id))
+        else:
+            flash('Password errata!')
+            
+    return render_template('unlock.html', note=note)
+
 @app.route('/note/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_note(id):
@@ -90,7 +116,10 @@ def edit_note(id):
     # Non permettere modifica se è nel cestino o non è tua
     if not note or note.user_id != current_user.id or note.is_deleted:
         return "Accesso negato", 403
-
+# --- CONTROLLO PASSWORD ---
+    if note.is_protected and not session.get(f'unlocked_{id}'):
+        return redirect(url_for('unlock_note', id=id))
+    # --------------------------
     if request.method == 'POST':
         version = NoteVersion(note_id=note.id, content=note.content)
         db.session.add(version)
@@ -146,6 +175,12 @@ def versions(id):
     note = db.session.get(Note, id)
     if not note or note.user_id != current_user.id: return "Accesso negato", 403
     
+# --- CONTROLLO PASSWORD ---
+    if note.is_protected and not session.get(f'unlocked_{id}'):
+        flash("Sblocca la nota per vedere la cronologia.")
+        return redirect(url_for('unlock_note', id=id))
+    # --------------------------
+
     history = NoteVersion.query.filter_by(note_id=id).order_by(NoteVersion.date_archived.desc()).all()
     return render_template('versions.html', note=note, history=history)
 
