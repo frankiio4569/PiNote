@@ -1,4 +1,4 @@
-# 📒 PiNote 5 (v2.2.2)
+# 📒 PiNote (v2.3.0)
 
 Un blocco note moderno, sicuro e self-hosted pensato per Raspberry Pi 5.
 

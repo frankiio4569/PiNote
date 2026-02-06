@@ -15,6 +15,10 @@
         </div>
         <input type="password" name="protection_password" class="form-control mt-2" placeholder="Password della nota">
     </div>
+    {% else %}
+        {% if unlocked_password %}
+        <input type="hidden" name="password_verification" value="{{ unlocked_password }}">
+        {% endif %}
     {% endif %}
 
     <div class="mb-3">

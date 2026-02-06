@@ -4,19 +4,19 @@
     <div class="col-md-6">
         <div class="card border-warning shadow">
             <div class="card-header bg-warning text-dark">
-                🔒 Nota Protetta
+                🔒 Conferma Accesso
             </div>
             <div class="card-body">
-                <h5 class="card-title">Accesso Riservato</h5>
-                <p class="card-text">La nota "<strong>{{ note.title }}</strong>" è protetta da password.</p>
+                <h5 class="card-title">Password Richiesta</h5>
+                <p class="card-text">L'operazione su "<strong>{{ note.title }}</strong>" richiede autorizzazione.</p>
                 
-                <form method="POST">
+                <form method="POST" action="">
                     <div class="mb-3">
                         <input type="password" name="password" class="form-control" placeholder="Inserisci password..." required autofocus>
                     </div>
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-warning">Sblocca</button>
-                        <a href="/" class="btn btn-secondary">Torna indietro</a>
+                        <button type="submit" class="btn btn-warning">Sblocca ed Esegui</button>
+                        <a href="/" class="btn btn-secondary">Annulla</a>
                     </div>
                 </form>
             </div>

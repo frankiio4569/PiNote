@@ -8,7 +8,7 @@ import os
 
 app = Flask(__name__)
 
-APP_VERSION = "2.2.2"
+APP_VERSION = "2.3.0"
 
 @app.context_processor
 def inject_version():
@@ -90,19 +90,28 @@ def unlock_note(id):
     note = db.session.get(Note, id)
     
     # Controlli di sicurezza base
-    if not note or note.user_id != current_user.id or note.is_deleted:
+    # Nota: Rimuoviamo il controllo 'note.is_deleted' qui se vogliamo permettere
+    # di sbloccare note nel cestino per poterle eliminare definitivamente o ripristinare.
+    if not note or note.user_id != current_user.id:
         return "Accesso negato", 403
     
-    # Se la nota non è protetta, non serve sbloccarla
+    # Se la nota non è protetta, vai direttamente alla modifica o alla destinazione richiesta
     if not note.is_protected:
         return redirect(url_for('edit_note', id=id))
 
     if request.method == 'POST':
         password_attempt = request.form.get('password')
-        # Verifica se la password è corretta
         if note.protection_password and check_password_hash(note.protection_password, password_attempt):
             # SALVA NELLA SESSIONE CHE QUESTA NOTA È APERTA
             session[f'unlocked_{id}'] = True
+            
+            # --- LOGICA AGGIUNTA PER IL REINDIRIZZAMENTO ---
+            # Controlla se c'era un'azione in sospeso
+            next_action = request.args.get('next')
+            if next_action:
+                return redirect(url_for(next_action, id=id))
+            # -----------------------------------------------
+            
             return redirect(url_for('edit_note', id=id))
         else:
             flash('Password errata!')
@@ -113,14 +122,29 @@ def unlock_note(id):
 @login_required
 def edit_note(id):
     note = db.session.get(Note, id)
-    # Non permettere modifica se è nel cestino o non è tua
+    # Controlli base (proprietà e cestino)
     if not note or note.user_id != current_user.id or note.is_deleted:
         return "Accesso negato", 403
-# --- CONTROLLO PASSWORD ---
-    if note.is_protected and not session.get(f'unlocked_{id}'):
-        return redirect(url_for('unlock_note', id=id))
-    # --------------------------
-    if request.method == 'POST':
+
+    # --- NUOVO CONTROLLO PASSWORD "STATELESS" ---
+    pwd_attempt = None
+    if note.is_protected:
+        # Cerchiamo la password in due posti:
+        # 1. 'password': se arriva dalla pagina di sblocco
+        # 2. 'password_verification': se arriva dal campo nascosto dell'editor (quando salvi)
+        pwd_attempt = request.form.get('password') or request.form.get('password_verification')
+
+        # Se non c'è password o è sbagliata, blocca tutto e mostra form sblocco
+        if not pwd_attempt or not check_password_hash(note.protection_password, pwd_attempt):
+            # Se l'utente ha provato una password ed era sbagliata, diamo feedback
+            if pwd_attempt: flash('Password errata!', 'danger')
+            return render_template('unlock.html', note=note)
+    # --------------------------------------------
+
+    # Se siamo qui, o la nota non è protetta, o la password è valida.
+    
+    if request.method == 'POST' and request.form.get('content'):
+        # È UN SALVATAGGIO
         version = NoteVersion(note_id=note.id, content=note.content)
         db.session.add(version)
         
@@ -131,54 +155,83 @@ def edit_note(id):
         flash('Nota aggiornata!')
         return redirect(url_for('index'))
     
-    return render_template('editor.html', note=note)
+    # MOSTRA L'EDITOR
+    # Passiamo 'pwd_attempt' al template così può metterlo nel campo nascosto
+    return render_template('editor.html', note=note, unlocked_password=pwd_attempt)
 
-# --- NUOVE FUNZIONI CESTINO ---
+# --- FUNZIONI CESTINO ---
 
-@app.route('/note/move_to_trash/<int:id>')
+@app.route('/note/move_to_trash/<int:id>', methods=['GET', 'POST']) # Aggiungi POST
 @login_required
 def move_to_trash(id):
     note = db.session.get(Note, id)
     if note and note.user_id == current_user.id:
+        
+        # --- CONTROLLO PASSWORD ---
+        if note.is_protected:
+            pwd_attempt = request.form.get('password')
+            if not pwd_attempt or not check_password_hash(note.protection_password, pwd_attempt):
+                if pwd_attempt: flash('Password errata!')
+                return render_template('unlock.html', note=note)
+        # --------------------------
+
         note.is_deleted = True
         db.session.commit()
         flash('Nota spostata nel cestino.')
     return redirect(url_for('index'))
 
-@app.route('/note/restore/<int:id>')
+@app.route('/note/restore/<int:id>', methods=['GET', 'POST']) # Aggiungi POST
 @login_required
 def restore_note(id):
     note = db.session.get(Note, id)
     if note and note.user_id == current_user.id:
+        
+        # --- CONTROLLO PASSWORD ---
+        if note.is_protected:
+            pwd_attempt = request.form.get('password')
+            if not pwd_attempt or not check_password_hash(note.protection_password, pwd_attempt):
+                if pwd_attempt: flash('Password errata!')
+                return render_template('unlock.html', note=note)
+        # --------------------------
+
         note.is_deleted = False
         db.session.commit()
         flash('Nota ripristinata!')
     return redirect(url_for('trash'))
 
-@app.route('/note/delete_forever/<int:id>')
+@app.route('/note/delete_forever/<int:id>', methods=['GET', 'POST']) # Aggiungi POST
 @login_required
 def delete_forever(id):
     note = db.session.get(Note, id)
     if note and note.user_id == current_user.id:
-        # Elimina anche le versioni storiche collegate per pulizia
+        
+        # --- CONTROLLO PASSWORD ---
+        if note.is_protected:
+            pwd_attempt = request.form.get('password')
+            if not pwd_attempt or not check_password_hash(note.protection_password, pwd_attempt):
+                if pwd_attempt: flash('Password errata!')
+                return render_template('unlock.html', note=note)
+        # --------------------------
+
         NoteVersion.query.filter_by(note_id=id).delete()
         db.session.delete(note)
         db.session.commit()
         flash('Nota eliminata definitivamente.')
     return redirect(url_for('trash'))
 
-# --- FINE NUOVE FUNZIONI ---
 
-@app.route('/note/versions/<int:id>')
+@app.route('/note/versions/<int:id>', methods=['GET', 'POST']) # Aggiungi POST
 @login_required
 def versions(id):
     note = db.session.get(Note, id)
     if not note or note.user_id != current_user.id: return "Accesso negato", 403
     
-# --- CONTROLLO PASSWORD ---
-    if note.is_protected and not session.get(f'unlocked_{id}'):
-        flash("Sblocca la nota per vedere la cronologia.")
-        return redirect(url_for('unlock_note', id=id))
+    # --- CONTROLLO PASSWORD ---
+    if note.is_protected:
+        pwd_attempt = request.form.get('password')
+        if not pwd_attempt or not check_password_hash(note.protection_password, pwd_attempt):
+             if pwd_attempt: flash('Password errata!')
+             return render_template('unlock.html', note=note)
     # --------------------------
 
     history = NoteVersion.query.filter_by(note_id=id).order_by(NoteVersion.date_archived.desc()).all()
