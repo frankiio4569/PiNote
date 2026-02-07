@@ -27,7 +27,6 @@ Continuerò ad aggiornare e a sperimentare.
    cd PiNote
    docker compose up -d --build
 
-
 Apri il browser su: http://localhost:5001
 
 ## 📄 Licenza
