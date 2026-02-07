@@ -8,14 +8,19 @@ import os
 
 app = Flask(__name__)
 
-APP_VERSION = "2.3.0"
+APP_VERSION = "2.4.0"
 
 @app.context_processor
 def inject_version():
     return dict(version=APP_VERSION)
 
-app.config['SECRET_KEY'] = 'chiave-segreta-molto-difficile-cambiala'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///notes.db'
+# CONFIGURAZIONE AGGIORNATA PER DOCKER
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'chiave-segreta-molto-difficile-cambiala')
+
+# Se siamo in Docker usiamo il percorso specifico, altrimenti quello locale
+db_path = os.environ.get('DB_PATH', 'sqlite:///notes.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = db_path
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -38,7 +43,6 @@ class Note(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     is_protected = db.Column(db.Boolean, default=False)
     protection_password = db.Column(db.String(150), nullable=True)
-    # NUOVO CAMPO PER IL CESTINO
     is_deleted = db.Column(db.Boolean, default=False)
 
 class NoteVersion(db.Model):
@@ -161,7 +165,7 @@ def edit_note(id):
 
 # --- FUNZIONI CESTINO ---
 
-@app.route('/note/move_to_trash/<int:id>', methods=['GET', 'POST']) # Aggiungi POST
+@app.route('/note/move_to_trash/<int:id>', methods=['GET', 'POST'])
 @login_required
 def move_to_trash(id):
     note = db.session.get(Note, id)
@@ -180,7 +184,7 @@ def move_to_trash(id):
         flash('Nota spostata nel cestino.')
     return redirect(url_for('index'))
 
-@app.route('/note/restore/<int:id>', methods=['GET', 'POST']) # Aggiungi POST
+@app.route('/note/restore/<int:id>', methods=['GET', 'POST'])
 @login_required
 def restore_note(id):
     note = db.session.get(Note, id)
@@ -199,7 +203,7 @@ def restore_note(id):
         flash('Nota ripristinata!')
     return redirect(url_for('trash'))
 
-@app.route('/note/delete_forever/<int:id>', methods=['GET', 'POST']) # Aggiungi POST
+@app.route('/note/delete_forever/<int:id>', methods=['GET', 'POST'])
 @login_required
 def delete_forever(id):
     note = db.session.get(Note, id)
@@ -220,7 +224,7 @@ def delete_forever(id):
     return redirect(url_for('trash'))
 
 
-@app.route('/note/versions/<int:id>', methods=['GET', 'POST']) # Aggiungi POST
+@app.route('/note/versions/<int:id>', methods=['GET', 'POST'])
 @login_required
 def versions(id):
     note = db.session.get(Note, id)

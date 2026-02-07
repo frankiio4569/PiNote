@@ -1,6 +1,6 @@
-# 📒 PiNote (v2.3.0)
+# 📒 PiNote (v2.4.0)
 
-Un blocco note moderno, sicuro e self-hosted pensato per Raspberry Pi 5.
+Un blocco note moderno, sicuro e self-hosted.
 
 ## Funzionalità
 * 🔐 **Multi-utente:** Ogni utente ha il suo spazio privato.
@@ -20,6 +20,14 @@ Continuerò ad aggiornare e a sperimentare.
    ```bash
    git clone https://github.com/frankiio4569/PiNote.git
    cd PiNote
+
+2.  Installazione con Docker:
+   ```bash
+   git clone https://github.com/frankiio4569/PiNote.git
+   cd PiNote
+   docker compose up -d --build
+  
+Apri il browser su: http://localhost:5001
 
 ## 📄 Licenza
 

@@ -1,0 +1,16 @@
+services:
+  pinote:
+    build: .
+    container_name: pinote_app
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    environment:
+      - DB_PATH=sqlite:////app/data/notes.db
+      - SECRET_KEY=chiave-segreta-molto-difficile-cambiala
+    volumes:
+      # Questo salva il database in una cartella sul dispositivo
+      - ./pinote_data:/app/data
+
+      # Se modifichi un file HTML o PY, la modifica avviene anche dentro Docker!
+      - .:/app

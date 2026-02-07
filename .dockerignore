@@ -1,6 +1,7 @@
 venv/
 __pycache__/
 instance/
+.git/
+.gitignore
 *.db
-.DS_Store
 pinote_data/
