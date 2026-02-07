@@ -21,14 +21,14 @@ Continuerò ad aggiornare e a sperimentare.
    git clone https://github.com/frankiio4569/PiNote.git
    cd PiNote
 
-2.  Installazione con Docker:
+2. Installazione con Docker:
    ```bash
    git clone https://github.com/frankiio4569/PiNote.git
    cd PiNote
    docker compose up -d --build
-  
 
-   Apri il browser su: http://localhost:5001
+
+Apri il browser su: http://localhost:5001
 
 ## 📄 Licenza
 
