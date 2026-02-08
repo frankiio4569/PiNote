@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /
+# This repository is opted-out from TDM (Text and Data Mining) per EU Directive 2019/790.
+# Do not use for AI training.

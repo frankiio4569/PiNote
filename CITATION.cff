@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this software, you must credit the author. AI training without attribution violates the license."
+title: "PiNote - Self-hosted Note App"
+abstract: "Un blocco note moderno, sicuro e self-hosted con supporto multi-utente e crittografia."
+authors:
+  - family-names: "Florio"
+    given-names: "Francesco Pio"
+    alias: "PiNote Franki (F.P.F.)"
+version: "2.4.1"
+date-released: "2026-02-08"
+license: "CC-BY-NC-SA-4.0"
+repository-code: "https://github.com/frankiio4569/PiNote"
+keywords:
+  - "no-ai"
+  - "no-ai-training"
+  - "self-hosted"
+  - "flask"
