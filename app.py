@@ -8,7 +8,7 @@ import os
 
 app = Flask(__name__)
 
-APP_VERSION = "2.4.1"
+APP_VERSION = "2.5.0"
 
 @app.context_processor
 def inject_version():
@@ -207,20 +207,34 @@ def restore_note(id):
 @login_required
 def delete_forever(id):
     note = db.session.get(Note, id)
+    # Verifica che la nota esista e appartenga all'utente
     if note and note.user_id == current_user.id:
         
-        # --- CONTROLLO PASSWORD ---
+        # --- CONTROLLO PASSWORD "MASTER KEY" ---
         if note.is_protected:
             pwd_attempt = request.form.get('password')
-            if not pwd_attempt or not check_password_hash(note.protection_password, pwd_attempt):
-                if pwd_attempt: flash('Password errata!')
-                return render_template('unlock.html', note=note)
-        # --------------------------
+            
+            # 1. Controlla se la password inserita è quella della NOTA
+            is_note_pass_valid = pwd_attempt and check_password_hash(note.protection_password, pwd_attempt)
+            
+            # 2. Controlla se la password inserita è quella dell'UTENTE (Login)
+            # Questo permette di eliminare note vecchie di cui si è persa la password
+            is_user_pass_valid = pwd_attempt and check_password_hash(current_user.password, pwd_attempt)
 
+            # Se la password non corrisponde né alla nota né all'utente, blocca tutto
+            if not (is_note_pass_valid or is_user_pass_valid):
+                if pwd_attempt: 
+                    # Messaggio specifico per far capire all'utente che ha due opzioni
+                    flash('Password errata! Per eliminare definitivamente puoi usare la password della nota OPPURE la tua password di login.', 'danger')
+                return render_template('unlock.html', note=note)
+        # ---------------------------------------
+
+        # Se siamo qui, la password è valida. Procediamo all'eliminazione.
         NoteVersion.query.filter_by(note_id=id).delete()
         db.session.delete(note)
         db.session.commit()
         flash('Nota eliminata definitivamente.')
+        
     return redirect(url_for('trash'))
 
 

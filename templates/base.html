@@ -44,6 +44,24 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     
+    <noscript>
+        <div class="container mt-3">
+            <div class="alert alert-warning shadow-sm border-warning" role="alert">
+                <h4 class="alert-heading">⚠️ JavaScript è disabilitato</h4>
+                <p>
+                    Sembra che il tuo browser abbia JavaScript disattivato.
+                    Senza JavaScript, alcune funzioni fondamentali di PiNote non funzioneranno:
+                </p>
+                <ul class="mb-0">
+                    <li>🌗 Il cambio <strong>Tema Scuro/Chiaro</strong> non sarà disponibile.</li>
+                    <li>🔽 I <strong>Menù a tendina</strong> potrebbero non aprirsi.</li>
+                    <li>🛡️ I messaggi a comparsa non verranno chiusi automaticamente.</li>
+                </ul>
+                <hr>
+                <p class="mb-0">Per un'esperienza completa, ti consigliamo di <strong>riattivare JavaScript</strong> nelle impostazioni del browser.</p>
+            </div>
+        </div>
+    </noscript>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="/">📒 PiNote</a>
@@ -64,16 +82,16 @@
                 </ul>
                 
                 <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
-    <div class="dropdown">
-        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
-            🌗 Tema
-        </button>
-        <ul class="dropdown-menu dropdown-menu-lg-end shadow">
-            <li><button type="button" class="dropdown-item" data-bs-theme-value="light">☀️ Chiaro</button></li>
-            <li><button type="button" class="dropdown-item" data-bs-theme-value="dark">🌙 Scuro</button></li>
-            <li><button type="button" class="dropdown-item" data-bs-theme-value="auto">🖥️ Auto</button></li>
-        </ul>
-    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            🌗 Tema
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-lg-end shadow">
+                            <li><button type="button" class="dropdown-item" data-bs-theme-value="light">☀️ Chiaro</button></li>
+                            <li><button type="button" class="dropdown-item" data-bs-theme-value="dark">🌙 Scuro</button></li>
+                            <li><button type="button" class="dropdown-item" data-bs-theme-value="auto">🖥️ Auto</button></li>
+                        </ul>
+                    </div>
 
                     <span class="text-white-50 small">{{ current_user.username }}</span>
                     <a href="/logout" class="btn btn-outline-danger btn-sm">Esci</a>

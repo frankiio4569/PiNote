@@ -19,7 +19,12 @@
                 
                 <div class="d-grid gap-2">
                     <a href="/note/restore/{{ note.id }}" class="btn btn-sm btn-success">♻️ Ripristina</a>
-                    <a href="/note/delete_forever/{{ note.id }}" class="btn btn-sm btn-danger" onclick="return confirm('Sei sicuro? Questa azione è irreversibile!')">🔥 Elimina per sempre</a>
+                    <a href="/note/delete_forever/{{ note.id }}" 
+   class="btn btn-sm btn-danger" 
+   title="Se non ricordi la password della nota, puoi usare la tua password di login."
+   onclick="return confirm('Sei sicuro? Questa azione è irreversibile!')">
+   🔥 Elimina per sempre
+</a>
                 </div>
             </div>
         </div>
