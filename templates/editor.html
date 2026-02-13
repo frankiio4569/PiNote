@@ -1,19 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>{{ 'Modifica Nota' if note else 'Nuova Nota' }}</h2>
+<div class="mb-3">
+    <h2>{{ 'Modifica Nota' if note else 'Nuova Nota' }}</h2>
+</div>
+
 <form method="POST">
     <div class="mb-3">
-        <label>Titolo</label>
-        <input type="text" name="title" class="form-control" value="{{ note.title if note else '' }}" required>
+        <label class="form-label fw-bold">Titolo</label>
+        <input type="text" name="title" class="form-control" value="{{ note.title if note else '' }}" required placeholder="Inserisci il titolo della nota...">
     </div>
     
     {% if not note %}
     <div class="mb-3 p-3 border rounded bg-body-tertiary">
         <div class="form-check">
             <input class="form-check-input" type="checkbox" name="is_protected" id="protCheck">
-            <label class="form-check-label" for="protCheck">Proteggi con Password</label>
+            <label class="form-check-label fw-bold" for="protCheck">Proteggi con Password</label>
         </div>
-        <input type="password" name="protection_password" class="form-control mt-2" placeholder="Password della nota">
+        <input type="password" name="protection_password" class="form-control mt-2" placeholder="Scegli una password per questa nota">
     </div>
     {% else %}
         {% if unlocked_password %}
@@ -22,10 +25,35 @@
     {% endif %}
 
     <div class="mb-3">
-        <label>Contenuto</label>
-        <textarea name="content" class="form-control" rows="10" required>{{ note.content if note else '' }}</textarea>
+        <textarea id="markdown-editor" name="content" class="form-control">{{ note.content if note else '' }}</textarea>
     </div>
-    <button type="submit" class="btn btn-success">Salva Nota</button>
-    <a href="/" class="btn btn-secondary">Annulla</a>
+
+    <div class="d-flex gap-2 mb-5">
+        <button type="submit" class="btn btn-success">Salva Nota</button>
+        <a href="/" class="btn btn-secondary">Annulla</a>
+    </div>
 </form>
+
+<script>
+    const easyMDE = new EasyMDE({
+        element: document.getElementById('markdown-editor'),
+        spellChecker: false, 
+        placeholder: "Scrivi qui...",
+        status: ["lines", "words"], 
+        minHeight: "400px",
+        maxHeight: "600px", // Evita che diventi troppo alto
+        
+        toolbar: [
+            "bold", "italic", "heading", "|", 
+            "quote", "unordered-list", "ordered-list", "|",
+            "link", "image", "table", "|",
+            "preview", "side-by-side", "|", // Rimosso fullscreen e guide per pulizia
+            "undo", "redo"
+        ],
+        renderingConfig: {
+            singleLineBreaks: false,
+            codeSyntaxHighlighting: true,
+        },
+    });
+</script>
 {% endblock %}

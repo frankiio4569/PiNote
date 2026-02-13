@@ -1,44 +1,87 @@
-# 📒 PiNote (v2.5.0)
+# 📒 PiNote (v2.6.0)
 
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![Release](https://img.shields.io/badge/Release-v2.6.0-blue.svg)](https://github.com/frankiio4569/PiNote)
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE)
 [![No AI Training](https://img.shields.io/badge/No_AI-Training-red)](NO-AI-TRAINING.md)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker&logoColor=white)](docker-compose.yml)
+[![Built with Flask](https://img.shields.io/badge/Built%20with-Flask-000000.svg?logo=flask&logoColor=white)](app.py)
 
-Un blocco note moderno, sicuro e self-hosted.
+**PiNote** è un'applicazione web per prendere appunti, progettata per essere **self-hosted**, sicura e facile da usare. Ideale per chi vuole mantenere il controllo sui propri dati senza rinunciare a un'interfaccia moderna.
 
-## Funzionalità
-* 🔐 **Multi-utente:** Ogni utente ha il suo spazio privato.
-* 🛡️ **Note Protette:** Possibilità di bloccare singole note con password.
-* 🕰️ **Cronologia:** Versionamento automatico per recuperare vecchie modifiche.
-* 🗑️ **Cestino:** Sistema di recupero per note cancellate.
-* 🌗 **Dark Mode:** Tema chiaro/scuro automatico o manuale.
+---
 
-Ci tengo a specificare che tutto questo progetto è a scopo personale,
-non sono del settore ma mi ha sempre divertito mettere le mani in pasta
-e quindi lo sto facendo anche per imparare.
-Continuerò ad aggiornare e a sperimentare.
+## ✨ Novità della v2.6.0
+* 📝 **Nuovo Editor Markdown:** Introdotto **EasyMDE**. Ora puoi formattare le note (grassetti, liste, tabelle, link) con un'interfaccia visuale e anteprima in tempo reale.
+* 🎨 **Restyling Grafico:** Interfaccia pulita e integrata perfettamente con il tema scuro.
+* ⚡ **Performance:** Ottimizzazione del caricamento delle librerie.
 
-## Installazione Rapida
+## 🚀 Funzionalità Principali
 
-1. Clona il repository:
-   ```bash
-   git clone https://github.com/frankiio4569/PiNote.git
-   cd PiNote
+* 🔐 **Multi-utente & Sicuro:** Sistema di login/registrazione completo. Ogni utente ha il suo database privato e isolato.
+* 🛡️ **Note Protette:** Hai informazioni sensibili? Puoi bloccare singole note con una **password dedicata** (crittografata).
+* 📝 **Formattazione Ricca:** Scrivi usando Markdown o la barra degli strumenti intuitiva.
+* 🕰️ **Cronologia Versioni:** Hai sbagliato a modificare? PiNote salva automaticamente le versioni precedenti. Puoi visualizzarle e recuperare vecchi contenuti in qualsiasi momento.
+* 🗑️ **Cestino Sicuro:** Le note cancellate finiscono in un'area di recupero prima dell'eliminazione definitiva.
+* 🌗 **Dark Mode:** Supporto nativo per tema Chiaro, Scuro o Automatico (basato sul sistema operativo).
+* 🐳 **Docker Ready:** Pronto per essere distribuito in pochi secondi su qualsiasi server o NAS.
 
-2. Installazione con Docker:
-   ```bash
-   git clone https://github.com/frankiio4569/PiNote.git
-   cd PiNote
-   docker compose up -d --build
+---
 
-Apri il browser su: http://localhost:5001
+## 🛠️ Installazione Rapida
 
-## 📄 Licenza
+Il modo più semplice per avviare PiNote è utilizzare **Docker Compose**.
+
+### Prerequisiti
+* Git
+* Docker & Docker Compose
+
+### Passaggi
+1.  **Clona il repository:**
+    ```bash
+    git clone [https://github.com/frankiio4569/PiNote.git](https://github.com/frankiio4569/PiNote.git)
+    cd PiNote
+    ```
+
+2.  **Avvia l'applicazione:**
+    ```bash
+    docker compose up -d --build
+    ```
+
+3.  **Finito!**
+    Apri il tuo browser e vai su: **http://localhost:5001**
+
+---
+
+## ⚙️ Configurazione Avanzata
+Puoi modificare il file `docker-compose.yml` per personalizzare l'installazione:
+
+* **Porta:** Cambia `"5001:5001"` se vuoi usare una porta diversa (es. `"8080:5001"`).
+* **Volume:** I dati vengono salvati in `./pinote_data`. Assicurati di fare il backup di questa cartella per non perdere le tue note.
+* **Secret Key:** Nel file `docker-compose.yml`, cambia la variabile `SECRET_KEY` con una stringa casuale per maggiore sicurezza in produzione.
+
+---
+
+## 👨‍💻 Nota dell'Autore
+> *Ci tengo a specificare che tutto questo progetto è a scopo personale e didattico. Non sono un professionista del settore, ma mi ha sempre divertito "mettere le mani in pasta" e imparare facendo.*
+>
+> *Continuerò ad aggiornare, sperimentare e migliorare PiNote nel tempo libero.*
+>
+> — **Francesco Pio Florio (F.P.F.)**
+
+---
+
+## 📄 Licenza e Diritti
 
 Copyright **© 2026 PiNote Franki (F.P.F.)**.
-Questo progetto è concesso in licenza secondo i termini della **CC BY-NC-SA 4.0**.
 
-✅ Puoi: Scaricarlo, usarlo, modificarlo gratuitamente.
-❌ Non puoi: Venderlo, usarlo per scopi commerciali o chiudere il codice sorgente.
-**⛔ NO AI: È vietato l'uso di questo codice per addestrare modelli di Intelligenza Artificiale (vedi [NO-AI-TRAINING.md](NO-AI-TRAINING.md)).**
+Questo progetto è rilasciato sotto licenza **CC BY-NC-SA 4.0** (Attribuzione - Non commerciale - Condividi allo stesso modo).
+
+* ✅ **Puoi:** Scaricare, usare, modificare e condividere il codice gratuitamente.
+* ❌ **Non puoi:** Usare questo software per scopi commerciali o venderlo.
+* ⚠️ **Condivisione:** Se modifichi il codice, devi rilasciarlo con la stessa licenza.
+
+### ⛔ NO AI TRAINING
+In conformità con la Direttiva UE 2019/790, l'autore **VIETA ESPLICITAMENTE** l'uso di questo codice e dei dati contenuti per l'addestramento di sistemi di Intelligenza Artificiale (LLM, Generative AI, ecc.).
+Per dettagli, vedi il file [NO-AI-TRAINING.md](NO-AI-TRAINING.md).
 
 [Leggi la licenza completa](LICENSE)

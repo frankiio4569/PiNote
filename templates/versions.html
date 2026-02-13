@@ -7,8 +7,9 @@
 
 <div class="card mb-4 border-primary">
     <div class="card-header bg-primary text-white">Versione Corrente</div>
-    <div class="card-body">
-        {{ note.content }}
+    <div class="card-body markdown-container">
+        <textarea class="raw-content d-none">{{ note.content }}</textarea>
+        <div class="rendered-html"></div>
     </div>
 </div>
 
@@ -21,12 +22,31 @@
         <div class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">Versione archiviata</h5>
-                <small class="text-muted">{{ version.date_archived.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                <small class="text-muted">{{ version.date_archived.strftime('%d/%m/%Y %H:%M:%S') }}</small>
             </div>
-            <p class="mb-1 text-muted">{{ version.content }}</p>
             
+            <div class="markdown-container mt-2">
+                <textarea class="raw-content d-none">{{ version.content }}</textarea>
+                <div class="rendered-html text-muted"></div>
             </div>
+        </div>
     {% endfor %}
     </div>
 {% endif %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Trova tutti i contenitori che devono mostrare Markdown
+        document.querySelectorAll('.markdown-container').forEach(container => {
+            // Prende il valore dalla textarea nascosta (questo metodo è sicuro per testi lunghi e caratteri speciali)
+            const rawContent = container.querySelector('.raw-content').value;
+            const targetDiv = container.querySelector('.rendered-html');
+            
+            // Se c'è contenuto, lo converte (Marked) e lo pulisce (DOMPurify) per sicurezza
+            if(rawContent && targetDiv) {
+                targetDiv.innerHTML = DOMPurify.sanitize(marked.parse(rawContent));
+            }
+        });
+    });
+</script>
 {% endblock %}
