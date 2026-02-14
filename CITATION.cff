@@ -6,8 +6,8 @@ authors:
   - family-names: "Florio"
     given-names: "Francesco Pio"
     alias: "PiNote Franki (F.P.F.)"
-version: "2.6.0"
-date-released: "2026-02-13"
+version: "2.6.1"
+date-released: "2026-02-14"
 license: "CC-BY-NC-SA-4.0"
 repository-code: "https://github.com/frankiio4569/PiNote"
 keywords:

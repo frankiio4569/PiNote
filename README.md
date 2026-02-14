@@ -1,6 +1,6 @@
-# 📒 PiNote (v2.6.0)
+# 📒 PiNote (v2.6.1)
 
-[![Release](https://img.shields.io/badge/Release-v2.6.0-blue.svg)](https://github.com/frankiio4569/PiNote)
+[![Release](https://img.shields.io/badge/Release-v2.6.1-blue.svg)](https://github.com/frankiio4569/PiNote)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE)
 [![No AI Training](https://img.shields.io/badge/No_AI-Training-red)](NO-AI-TRAINING.md)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker&logoColor=white)](docker-compose.yml)
@@ -10,10 +10,11 @@
 
 ---
 
-## ✨ Novità della v2.6.0
-* 📝 **Nuovo Editor Markdown:** Introdotto **EasyMDE**. Ora puoi formattare le note (grassetti, liste, tabelle, link) con un'interfaccia visuale e anteprima in tempo reale.
-* 🎨 **Restyling Grafico:** Interfaccia pulita e integrata perfettamente con il tema scuro.
-* ⚡ **Performance:** Ottimizzazione del caricamento delle librerie.
+## ✨ Novità della v2.6.1
+
+* ⚠️ **Migliorato avviso No-JS:** Introdotto un sistema di rilevamento dettagliato per i browser con JavaScript disabilitato. Ora l'utente viene informato specificamente su quali funzioni sono limitate (Editor, Temi, Alert) invece di ricevere un errore generico.
+* 📝 **Nuovo Editor Markdown (dalla v2.6.0):** Introdotto **EasyMDE**. Scrittura con formattazione visuale (grassetti, liste, tabelle), anteprima "Side-by-Side" e conteggio parole.
+* 🎨 **Restyling Grafico:** Interfaccia ripulita e ottimizzata per la modalità scura.
 
 ## 🚀 Funzionalità Principali
 
@@ -66,7 +67,7 @@ Puoi modificare il file `docker-compose.yml` per personalizzare l'installazione:
 >
 > *Continuerò ad aggiornare, sperimentare e migliorare PiNote nel tempo libero.*
 >
-> — **Francesco Pio Florio (F.P.F.)**
+> — **Franki (F.P.F.)**
 
 ---
 
