@@ -1,6 +1,6 @@
-# 📒 PiNote (v2.6.1)
+# 📒 PiNote (v2.6.2)
 
-[![Release](https://img.shields.io/badge/Release-v2.6.1-blue.svg)](https://github.com/frankiio4569/PiNote)
+[![Release](https://img.shields.io/badge/Release-v2.6.2-blue.svg)](https://github.com/frankiio4569/PiNote)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE)
 [![No AI Training](https://img.shields.io/badge/No_AI-Training-red)](NO-AI-TRAINING.md)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker&logoColor=white)](docker-compose.yml)
@@ -10,11 +10,12 @@
 
 ---
 
-## ✨ Novità della v2.6.1
+## ✨ Novità della v2.6.2
 
-* ⚠️ **Migliorato avviso No-JS:** Introdotto un sistema di rilevamento dettagliato per i browser con JavaScript disabilitato. Ora l'utente viene informato specificamente su quali funzioni sono limitate (Editor, Temi, Alert) invece di ricevere un errore generico.
-* 📝 **Nuovo Editor Markdown (dalla v2.6.0):** Introdotto **EasyMDE**. Scrittura con formattazione visuale (grassetti, liste, tabelle), anteprima "Side-by-Side" e conteggio parole.
-* 🎨 **Restyling Grafico:** Interfaccia ripulita e ottimizzata per la modalità scura.
+* 🕰️ **Fuso Orario Dinamico:** Le date e gli orari di aggiornamento delle note (e dello storico) ora si adattano automaticamente al fuso orario locale del tuo dispositivo! Nessun problema di sfasamento orario, indipendentemente da dove sia ospitato il server Docker (che lavora in UTC).
+* 🧹 **Refactoring e Pulizia:** Codice ottimizzato con la rimozione di logiche orfane e importazioni duplicate in `app.py`. La gestione dei permessi ora sfrutta appieno un approccio "stateless" più pulito e sicuro.
+* ⚠️ **Migliorato avviso No-JS:** Aggiornato il banner per i browser con JavaScript disabilitato. Oltre alle limitazioni su Editor e Temi, l'utente viene ora informato che le date non verranno visualizzate correttamente senza JS.
+* 📝 **Editor Markdown (dalla v2.6.0):** Continua l'integrazione di **EasyMDE** per una scrittura con formattazione visuale (grassetti, liste, tabelle), anteprima "Side-by-Side" e conteggio parole.
 
 ## 🚀 Funzionalità Principali
 

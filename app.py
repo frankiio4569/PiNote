@@ -1,4 +1,3 @@
-from flask import Flask, render_template, redirect, url_for, request, flash, session
 from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
@@ -8,7 +7,7 @@ import os
 
 app = Flask(__name__)
 
-APP_VERSION = "2.6.1"
+APP_VERSION = "2.6.2"
 
 @app.context_processor
 def inject_version():
@@ -88,39 +87,6 @@ def new_note():
         return redirect(url_for('index'))
     return render_template('editor.html', note=None)
 
-@app.route('/note/unlock/<int:id>', methods=['GET', 'POST'])
-@login_required
-def unlock_note(id):
-    note = db.session.get(Note, id)
-    
-    # Controlli di sicurezza base
-    # Nota: Rimuoviamo il controllo 'note.is_deleted' qui se vogliamo permettere
-    # di sbloccare note nel cestino per poterle eliminare definitivamente o ripristinare.
-    if not note or note.user_id != current_user.id:
-        return "Accesso negato", 403
-    
-    # Se la nota non è protetta, vai direttamente alla modifica o alla destinazione richiesta
-    if not note.is_protected:
-        return redirect(url_for('edit_note', id=id))
-
-    if request.method == 'POST':
-        password_attempt = request.form.get('password')
-        if note.protection_password and check_password_hash(note.protection_password, password_attempt):
-            # SALVA NELLA SESSIONE CHE QUESTA NOTA È APERTA
-            session[f'unlocked_{id}'] = True
-            
-            # --- LOGICA AGGIUNTA PER IL REINDIRIZZAMENTO ---
-            # Controlla se c'era un'azione in sospeso
-            next_action = request.args.get('next')
-            if next_action:
-                return redirect(url_for(next_action, id=id))
-            # -----------------------------------------------
-            
-            return redirect(url_for('edit_note', id=id))
-        else:
-            flash('Password errata!')
-            
-    return render_template('unlock.html', note=note)
 
 @app.route('/note/edit/<int:id>', methods=['GET', 'POST'])
 @login_required

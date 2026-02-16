@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="card-footer text-muted small bg-transparent">
-                Aggiornato: {{ note.date_updated.strftime('%d/%m %H:%M') }}
+                Aggiornato: <span class="local-time" data-utc="{{ note.date_updated.strftime('%Y-%m-%dT%H:%M:%SZ') }}"></span>
             </div>
         </div>
     </div>
